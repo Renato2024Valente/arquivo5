@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álbum de Fotos e Vídeos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #a3caf0;
+        }
+        header {
+            background-color: #1546e7;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .upload-section {
+            background-color: #93c9e9;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        input[type="file"], textarea {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #1c39da;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .gallery-item {
+            width: 30%;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .gallery-item img, .gallery-item video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .gallery-item p {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Álbum de Fotos e Vídeos</h1>
+    </header>
+    
+    <div class="container">
+        <!-- Seção de Upload -->
+        <div class="upload-section" id="uploadSection">
+            <h2>Upload de Foto ou Vídeo</h2>
+            <form id="uploadForm">
+                <label for="fileUpload">Selecione Foto ou Vídeo:</label>
+                <input type="file" id="fileUpload" accept="image/*,video/*">
+                
+                <label for="caption">Adicione uma Legenda:</label>
+                <textarea id="caption" rows="3" placeholder="Escreva uma legenda..."></textarea>
+                
+                <button type="button" onclick="addToGallery()">Adicionar ao Álbum</button>
+            </form>
+        </div>
+
+        <!-- Álbum de Fotos/Vídeos -->
+        <div class="gallery" id="gallery">
+            <!-- Os itens do álbum aparecerão aqui -->
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x/firebase-storage.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY", // Adicione sua API Key
+            authDomain: "SEU_DOMINIO.firebaseapp.com",
+            projectId: "SEU_PROJETO_ID",
+            storageBucket: "SEU_BUCKET.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+
+        let galleryItems = JSON.parse(localStorage.getItem('galleryItems')) || [];
+
+        // Adicionar item à galeria
+        function addToGallery() {
+            const fileInput = document.getElementById('fileUpload');
+            const caption = document.getElementById('caption').value;
+
+            const file = fileInput.files[0];
+            if (!file) {
+                alert("Por favor, selecione um arquivo.");
+                return;
+            }
+
+            const storageRef = storage.ref('uploads/' + file.name);
+            
+            // Faz o upload para o Firebase Storage
+            storageRef.put(file).then(snapshot => {
+                console.log('Upload concluído!', snapshot);
+
+                // Obter o URL do arquivo
+                snapshot.ref.getDownloadURL().then(url => {
+                    console.log('URL do arquivo:', url);
+
+                    const newItem = {
+                        fileUrl: url,
+                        fileType: file.type,
+                        caption
+                    };
+                    galleryItems.push(newItem);
+                    localStorage.setItem('galleryItems', JSON.stringify(galleryItems));
+                    displayGalleryItems();
+                }).catch(error => {
+                    console.error('Erro ao obter URL:', error);
+                });
+            }).catch(error => {
+                console.error('Erro ao fazer upload:', error);
+            });
+
+            // Limpar o formulário
+            document.getElementById('uploadForm').reset();
+        }
+
+        // Exibir itens da galeria
+        function displayGalleryItems() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            galleryItems.forEach((item, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.classList.add('gallery-item');
+
+                if (item.fileType.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = item.fileUrl;
+                    galleryItem.appendChild(img);
+                } else if (item.fileType.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.src = item.fileUrl;
+                    video.controls = true;
+                    galleryItem.appendChild(video);
+                }
+                
+                if (item.caption) {
+                    const captionElement = document.createElement('p');
+                    captionElement.textContent = item.caption;
+                    galleryItem.appendChild(captionElement);
+                }
+
+                gallery.appendChild(galleryItem);
+            });
+        }
+
+        // Exibir itens ao carregar a página
+        window.onload = displayGalleryItems;
+    </script>
+</body>
+</html>

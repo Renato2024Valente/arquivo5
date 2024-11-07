@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Ocorrência Disciplinar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #9dc5ed;
+        }
+        .container {
+            max-width: 700px;
+            background-color: rgb(215, 224, 235);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .school-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .school-header h3 {
+            margin: 0;
+            font-weight: 700;
+            color: #343a40;
+        }
+        .school-header p {
+            margin: 5px 0;
+            color: #6c757d;
+        }
+        .current-datetime {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="school-header">
+            <h3>EE "MONSENHOR BICUDO"</h3>
+            <p>Av. Rio Branco, 803, Marília - SP</p>
+            <p>Telefone: (14) 3433-5163 | E-mail: e033753a@educacao.sp.gov.br</p>
+        </div>
+        <div class="current-datetime">
+            <p id="current-date"></p>
+            <p id="current-time"></p>
+        </div>
+        <h2 class="text-center">Registro de Ocorrência Disciplinar</h2>
+        <form id="occurrence-form">
+            <div class="form-group">
+                <label for="turma">Selecione a Turma *</label>
+                <select class="form-control" id="turma" required>
+                    <option value="" disabled selected>Escolha a turma...</option>
+                    <option value="https://forms.gle/CZnrSYtm2kdSB4w27">6º ano A</option>
+                    <option value="https://forms.gle/qS6FGD2VKh4HNBXJ7">6º ano B</option>
+                    <option value="https://forms.gle/GyFs8y6DgCUTjccR8">6º ano C</option>
+                    <option value="https://forms.gle/9FJTGLdepNJ8enKF6">6º ano D</option>
+                    <option value="https://forms.gle/BnV2HkSEN31y94hr8">7º ano A</option>
+                    <option value="https://forms.gle/GQkctQMHwUReS3dh6">7º ano B</option>
+                    <option value="https://forms.gle/tCQcBuFXvyC6g6mN7">7º ano C</option>
+                    <option value="https://forms.gle/pnfWne6Cuw537FBKA">7º ano D</option>
+                    <option value="https://forms.gle/cyeTxfxxPT8FVMJG9">8º ano A</option>
+                    <option value="https://forms.gle/J4UbmbRe7p86e28w6">8º ano B</option>
+                    <option value="https://forms.gle/LzPvxx9yhQxQMrGA8">8º ano C</option>
+                    <option value="https://forms.gle/2aXE36p7rxTyah9x5">8º ano D</option>
+                    <option value="https://forms.gle/uiALSyZN4FbHDuTt5">9º ano A</option>
+                    <option value="https://forms.gle/TVkXSHXVrHp4pbsB8">9º ano B</option>
+                    <option value="https://forms.gle/7FF5fKfaaBGspRXW9">9º ano C</option>
+                    <option value="https://forms.gle/GpbdtBtzj7J51MnFA">9º ano D</option>
+                    <option value="https://forms.gle/pGJkkiHjGQDE5ebG9">1ª série A</option>
+                    <option value="https://forms.gle/FJ7wXDQ1tsNtgQAEA">1ª série B</option>
+                    <option value="https://forms.gle/L8YpFR5tSwpEYtgAA">1ª série C</option>
+                    <option value="https://forms.gle/ons3KfJo4JXfqTu98">2ª série A</option>
+                    <option value="https://forms.gle/ons3KfJo4JXfqTu98">2ª série B</option>
+                    <option value="https://forms.gle/dEPxMXyJ2fXDLJTg9">3ª série A</option>
+                    <option value="https://forms.gle/sUk85XVvLt27sKPg6">3ª ADM</option>
+                    <option value="https://forms.gle/EzpGptahF2Qtoh3Y8">3ª INF</option>
+                    <option value="https://forms.gle/JZeJtgeTgZAjTn2K9">3ª MKT</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Registrar Ocorrência</button>
+        </form>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+
+            const now = new Date();
+            document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR', dateOptions);
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('pt-BR', timeOptions);
+        }
+
+        document.getElementById('occurrence-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedTurma = document.getElementById('turma').value;
+            if (selectedTurma) {
+                window.open(selectedTurma, '_blank');
+            } else {
+                alert('Por favor, selecione uma turma.');
+            }
+        });
+
+        // Update date and time on page load
+        updateDateTime();
+        // Update time every second
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>

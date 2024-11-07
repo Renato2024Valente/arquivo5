@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão-Bicudo</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-image: url("12.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #fff;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8em;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar-dark .navbar-nav .nav-link:hover {
+            background-color: #5a6268;
+            color: #ffeb3b;
+        }
+
+        h1 {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 25px;
+            font-size: 3em;
+            animation: glowing 1.5s infinite;
+            text-align: center;
+        }
+
+        @keyframes glowing {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #71a6eb, 0 0 20px #7f9ee2, 0 0 25px #6ea8df, 0 0 30px #88a0f0, 0 0 35px #706ee2; }
+            50% { text-shadow: 0 0 10px #fff, 0 0 20px #081dd8, 0 0 30px #0044ff, 0 0 40px #0004ff, 0 0 50px #4b24f7, 0 0 60px #3643f5, 0 0 70px #4b39ee; }
+            100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #5c87e4, 0 0 20px #6782d8, 0 0 25px #5861e2, 0 0 30px #7c65e4, 0 0 35px #726bdd; }
+        }
+
+        p {
+            font-size: 1.7em;
+            color: #f8f9fa;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-link {
+            font-size: 1.1em;
+        }
+
+        .info-bar {
+            background-color: #030405;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        #loginModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loginModal .modal-content {
+            background-color: #343a40;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+            margin: auto;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-bar">
+        <span id="date-time"></span> | Monsenhor Bicudo Marília
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="https://www.facebook.com/monsenhorbicudo/videos/">
+            <i class="fab fa-facebook-square"></i> Facebook_bicudo
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-chalkboard-teacher"></i> Gestão Professor
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="Tutoria.html"><i class="fas fa-book"></i> Tutoria Digital</a>
+                        <a class="dropdown-item" href="boletim.html"><i class="fas fa-clipboard-list"></i> Boletim</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-clipboard-list"></i>_Mapa_Sala</a>
+                        <a class="dropdown-item" href="https://onedrive.live.com/?id=root&cid=A1384B1A0DF2CD7A"><i class="fas fa-clipboard-list"></i>_OneDrive</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-clipboard-list"></i>_...</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-clipboard-list"></i>_...</a>
+          
+                    </div>
+                    
+                    
+                </li>
+
+                
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-laptop-code"></i>Tecnologia
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <a class="dropdown-item" href="https://renato2024valente.github.io/Bicudo_Tec_2024/">
+                            <i class="fas fa-code"></i> Projetos
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="Ocorrencia.html">
+                        <i class="fas fa-exclamation-circle"></i> Ocorrência Digital
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://docs.google.com/spreadsheets/d/17ojcO3cHHeimXiXW3mDVBCTSC-Vqp83ta-DtnYI_xzE/edit?gid=1201166039#gid=1201166039">
+                        <i class="fas fa-desktop"></i> Espaços Informática
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" id="gestaoEscolarLink">
+                        <i class="fas fa-chalkboard-teacher"></i> Gestão Escolar
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="Fotos.html" id="gestaoEscolarLink">
+                        <i class="fas fa-chalkboard-teacher"></i>Galeria
+                    </a>
+                </li>
+                  
+                <li class="nav-item active">
+                    <a class="nav-link" href="Postagem.html" id="gestaoEscolarLink">
+                        <i class="fas fa-chalkboard-teacher"></i> Upload-Fotos
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Bem-vindo! E.E.Monsenhor Bicudo</h1>
+        <p>Portal_Bicudo.sp.gov</p>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="loginModal">
+        <div class="modal-content">
+            <h4 class="text-center">Login</h4>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function updateDateTime() {
+            var now = new Date();
+            var dateTimeStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
+            document.getElementById('date-time').textContent = dateTimeStr;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Abrir o modal de login ao clicar no link de Gestão Escolar
+        document.getElementById('gestaoEscolarLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('loginModal').style.display = 'flex';
+        });
+
+        // Verificação do login
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Defina o usuário e senha corretos
+            var correctUsername = "admin";
+            var correctPassword = "1234";
+
+            if (username === correctUsername && password === correctPassword) {
+                // Ocultar o modal de login
+                document.getElementById('loginModal').style.display = 'none';
+
+                // Mostrar as subpastas de Gestão Escolar
+                var gestaoEscolarDropdown = document.createElement('div');
+                gestaoEscolarDropdown.className = 'dropdown-menu show';
+                gestaoEscolarDropdown.innerHTML = `
+                    <a class="dropdown-item" href="Ata_Digital.html"><i class="fas fa-book"></i>ATAS_Digitais</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-clipboard-list"></i> Subpasta 2</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-clipboard-list"></i> Subpasta 3</a>
+                `;
+                document.getElementById('gestaoEscolarLink').parentNode.appendChild(gestaoEscolarDropdown);
+            } else {
+                alert("Usuário ou senha incorretos. Tente novamente.");
+            }
+        });
+
+        // Fechar o modal se clicar fora dele
+        window.onclick = function(event) {
+            var modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+

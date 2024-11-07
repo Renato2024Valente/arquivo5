@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload de Fotos com Pré-Visualização</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f0f0;
+        }
+        .login-container, .upload-container {
+            margin-top: 100px;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+        }
+        .upload-container {
+            max-width: 600px;
+            margin: 50px auto;
+            display: none;
+        }
+        .gallery img {
+            width: 150px;
+            margin: 10px;
+        }
+        .gallery div {
+            display: inline-block;
+            position: relative;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        <h2 class="text-center">Login da Direção</h2>
+        <div class="mb-3">
+            <label for="username" class="form-label">Usuário</label>
+            <input type="text" class="form-control" id="username" placeholder="Digite seu usuário">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="password" placeholder="Digite sua senha">
+        </div>
+        <button class="btn btn-primary w-100" onclick="login()">Entrar</button>
+    </div>
+
+    <!-- Upload Section (hidden until login) -->
+    <div class="upload-container">
+        <h2 class="text-center">Postar Foto da Escola</h2>
+        <div class="mb-3">
+            <input type="file" class="form-control" id="fileInput" accept="image/*" onchange="previewImage()">
+        </div>
+        <div class="text-center mb-3">
+            <img id="preview" src="" alt="Pré-visualização" style="max-width: 200px; display: none;">
+        </div>
+        <button class="btn btn-success w-100" onclick="uploadImage()">Postar Foto</button>
+
+        <!-- Gallery -->
+        <div class="gallery mt-4">
+            <h3>Galeria de Fotos</h3>
+            <!-- Fotos postadas aparecerão aqui -->
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+
+    <!-- Firebase Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-analytics.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiu-nis0QuV_A11lcRZLlFXG6xgv9_11Q",
+            authDomain: "sitebicudo.firebaseapp.com",
+            projectId: "sitebicudo",
+            storageBucket: "sitebicudo.appspot.com",
+            messagingSenderId: "167794993513",
+            appId: "1:167794993513:web:64b9263d4adeeb92e1f5f8",
+            measurementId: "G-GSZ4MK665K"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // Função de login
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Simulação de login simples
+            if (username === "direcao" && password === "1234") {
+                document.querySelector('.login-container').style.display = 'none';
+                document.querySelector('.upload-container').style.display = 'block';
+                loadImages(); // Carrega imagens existentes
+            } else {
+                alert("Usuário ou senha incorretos!");
+            }
+        }
+
+        // Função de pré-visualização de imagem
+        function previewImage() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            var preview = document.getElementById('preview');
+            
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        // Função de upload de imagem
+        function uploadImage() {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var images = JSON.parse(localStorage.getItem('images') || '[]');
+                    images.push(e.target.result);
+                    localStorage.setItem('images', JSON.stringify(images));
+                    alert('Imagem postada com sucesso!');
+                    loadImages(); // Atualiza a galeria após postagem
+                    document.getElementById('fileInput').value = ""; // Limpa o campo de upload
+                    document.getElementById('preview').style.display = 'none'; // Esconde a pré-visualização
+                }
+                reader.readAsDataURL(file);
+            } else {
+                alert('Por favor, selecione uma imagem!');
+            }
+        }
+
+        // Função para carregar as imagens e exibi-las na galeria
+        function loadImages() {
+            var images = JSON.parse(localStorage.getItem('images') || '[]');
+            var gallery = document.querySelector('.gallery');
+            gallery.innerHTML = ''; // Limpa a galeria antes de recarregar
+
+            images.forEach(function (src, index) {
+                var imgDiv = document.createElement('div');
+                var img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Imagem ' + (index + 1);
+
+                // Botão de deletar
+                var deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.onclick = function() {
+                    deleteImage(index);
+                };
+
+                imgDiv.appendChild(img);
+                imgDiv.appendChild(deleteBtn);
+                gallery.appendChild(imgDiv);
+            });
+        }
+
+        // Função para deletar uma imagem
+        function deleteImage(index) {
+            var images = JSON.parse(localStorage.getItem('images') || '[]');
+            images.splice(index, 1); // Remove a imagem do array
+            localStorage.setItem('images', JSON.stringify(images)); // Atualiza o localStorage
+            loadImages(); // Recarrega a galeria após a exclusão
+        }
+    </script>
+
+</body>
+</html>
